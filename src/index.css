@@ -1,0 +1,41 @@
+@import "tailwindcss";
+
+/* Base Body Style with Gradient Fallback */
+body {
+  margin: 0;
+  background: linear-gradient(to bottom, #FFEEDE, #FFF3E0, #DEEBFF);
+  background-attachment: fixed;
+  color: #1a1b20;
+}
+
+/* Custom premium animations keyframes */
+@keyframes calendarJiggle {
+  0% { transform: rotate(0deg); }
+  25% { transform: rotate(-8deg); }
+  75% { transform: rotate(8deg); }
+  100% { transform: rotate(0deg); }
+}
+
+@keyframes pulse-glow {
+  0% {
+    transform: scale(0.85);
+    opacity: 0.6;
+  }
+  50% {
+    transform: scale(1.25);
+    opacity: 0.95;
+  }
+  100% {
+    transform: scale(0.85);
+    opacity: 0.6;
+  }
+}
+
+/* Tailwind Custom Utility Classes for Animations */
+@utility animate-calendar-jiggle {
+  animation: calendarJiggle 0.4s ease-in-out;
+}
+
+@utility animate-pulse-glow {
+  animation: pulse-glow 2s infinite ease-in-out;
+}
