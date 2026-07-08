@@ -41,12 +41,22 @@ export default function ProtectedRoute({ children }) {
     }
 
     const onboardingCompleted = userData?.onboarding_completed;
+    const role = userData?.role;
 
     // Save onboarding status locally to maintain compatibility with other parts of the app
     if (onboardingCompleted) {
         localStorage.setItem('onboardingCompleted', 'true');
     } else {
         localStorage.removeItem('onboardingCompleted');
+    }
+
+    /* ASRAMAM USER Can access ONLY /live */
+    if (role === 'asramam') {
+        if (location.pathname !== '/live') {
+            return <Navigate to="/live" replace />;
+        }
+
+        return children;
     }
 
     if (!onboardingCompleted && location.pathname !== '/onboarding') {

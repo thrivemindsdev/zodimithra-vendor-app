@@ -134,7 +134,7 @@ export default function Live() {
 
           {/* STATE 2: Set-up controls */}
           {!isStarting && !isLive && (
-            <div className="w-full flex flex-col items-center gap-6">
+            <div className="w-full flex flex-col items-center gap-6 lg:flex-row lg:flex-wrap lg:justify-center lg:items-center">
 
               {/* GO LIVE Setup Card */}
               <LiveSetupCard

@@ -127,7 +127,9 @@ export default function Otp() {
         dispatch(setToken(token));
         dispatch(setUser(userData));
 
-        if (onboardingCompleted) {
+        if(response.data.role === 'asramam') {
+          navigate('/live');
+        } else if (onboardingCompleted) {
           localStorage.setItem('onboardingCompleted', 'true');
           navigate('/');
         } else {

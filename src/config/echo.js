@@ -5,7 +5,7 @@ import { store } from '../redux/store';
 window.Pusher = Pusher;
 
 const isLocal = false;
-const apiUrl = 'https://zodimithra.howincloud.com/api';
+const apiUrl = 'https://backend.zodimithra.com/api';
 
 const getHostName = (url) => {
     try {

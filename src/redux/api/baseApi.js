@@ -4,7 +4,7 @@ const isLocal = false;
 
 const BASE_URL = isLocal    
     ? 'http://zodiminds-backend.test/api'
-    : 'https://zodimithra.howincloud.com/api';
+    : 'https://backend.zodimithra.com/api';
 
 
 export const baseApi = createApi({
