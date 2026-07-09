@@ -39,3 +39,15 @@ body {
 @utility animate-pulse-glow {
   animation: pulse-glow 2s infinite ease-in-out;
 }
+
+input,
+select {
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+input[type="date"],
+input[type="time"] {
+  appearance: none;
+  -webkit-appearance: none;
+}

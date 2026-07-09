@@ -128,7 +128,7 @@ export default function Otp() {
         dispatch(setUser(userData));
 
         if(response.data.role === 'asramam') {
-          navigate('/live');
+          navigate('/ashrama-live');
         } else if (onboardingCompleted) {
           localStorage.setItem('onboardingCompleted', 'true');
           navigate('/');

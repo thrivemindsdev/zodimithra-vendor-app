@@ -52,8 +52,8 @@ export default function ProtectedRoute({ children }) {
 
     /* ASRAMAM USER Can access ONLY /live */
     if (role === 'asramam') {
-        if (location.pathname !== '/live') {
-            return <Navigate to="/live" replace />;
+        if (location.pathname !== '/ashrama-live') {
+            return <Navigate to="/ashrama-live" replace />;
         }
 
         return children;

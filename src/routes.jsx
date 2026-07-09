@@ -35,6 +35,7 @@ import TransitAlerts from './pages/TransitAlerts/TransitAlerts';
 
 import ProtectedRoute from './components/ProtectedRoute';
 import PublicRoute from './components/PublicRoute';
+import AshramaLive from './pages/AshramaLive/AshramaLive';
 
 export default function AppRoutes() {
   return (
@@ -51,6 +52,7 @@ export default function AppRoutes() {
       <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
       <Route path="/tools" element={<ProtectedRoute><Tools /></ProtectedRoute>} />
       <Route path="/live" element={<ProtectedRoute><Live /></ProtectedRoute>} />
+      <Route path="/ashrama-live" element={<ProtectedRoute><AshramaLive /></ProtectedRoute>} />
       <Route path="/video-call" element={<ProtectedRoute><VideoCall /></ProtectedRoute>} />
       <Route path="/audio-call" element={<ProtectedRoute><AudioCall /></ProtectedRoute>} />
       <Route path="/bookings" element={<ProtectedRoute><Bookings /></ProtectedRoute>} />
