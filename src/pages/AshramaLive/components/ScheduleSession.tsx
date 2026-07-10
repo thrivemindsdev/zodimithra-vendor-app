@@ -105,7 +105,7 @@ const ScheduleSession = () => {
   };
 
   return (
-    <div className="bg-white p-4 rounded-3xl mt-4">
+    <div className="bg-white p-4 rounded-2xl mt-4 lg:mt-0">
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-base font-semibold text-gray-800">
@@ -113,8 +113,11 @@ const ScheduleSession = () => {
         </h2>
 
         <span
-          onClick={() => setErrors({})}
-          className="rounded-full border border-indigo-200 bg-indigo-50 px-4 py-1 text-xs font-medium text-indigo-600"
+          onClick={() => {
+            setErrors({});
+            setForm(initialForm);
+          }}
+          className="rounded-full border border-indigo-200 bg-indigo-50 px-4 py-1 text-xs font-medium text-indigo-600 hover:cursor-pointer"
         >
           Reset
         </span>
@@ -133,7 +136,7 @@ const ScheduleSession = () => {
             value={form.title}
             onChange={handleChange}
             placeholder="E.G. Shani Transit Special 2026"
-            className={`w-full h-10 rounded-lg bg-[#F5EDE3] px-3 text-sm outline-none border ${
+            className={`w-full h-10 rounded-lg bg-[#F5EDE3] placeholder:text-sm px-3 text-sm outline-none border ${
               errors.title ? "border-red-500" : "border-transparent"
             }`}
           />
@@ -171,7 +174,7 @@ const ScheduleSession = () => {
                     setDateType("text");
                   }
                 }}
-                className={`w-full h-10 rounded-lg bg-[#F5EDE3] px-3 pr-10 outline-none border ${
+                className={`w-full h-10 rounded-lg bg-[#F5EDE3] placeholder:text-sm px-3 pr-10 outline-none border ${
                   errors.date ? "border-red-500" : "border-transparent"
                 }`}
               />
@@ -212,7 +215,7 @@ const ScheduleSession = () => {
                     setTimeType("text");
                   }
                 }}
-                className={`w-full h-10 rounded-lg bg-[#F5EDE3] px-3 pr-10 outline-none border ${
+                className={`w-full h-10 rounded-lg bg-[#F5EDE3] placeholder:text-sm px-3 pr-10 outline-none border ${
                   errors.time ? "border-red-500" : "border-transparent"
                 }`}
               />
@@ -239,7 +242,7 @@ const ScheduleSession = () => {
             value={form.description}
             onChange={handleChange}
             placeholder="Describe What You'll Cover..."
-            className={`w-full h-20 resize-none rounded-lg bg-[#F5EDE3] p-3 outline-none border ${
+            className={`w-full h-20 resize-none rounded-lg bg-[#F5EDE3] placeholder:text-sm p-3 outline-none border ${
               errors.description ? "border-red-500" : "border-transparent"
             }`}
           />
@@ -254,7 +257,7 @@ const ScheduleSession = () => {
         <button
           type="submit"
           disabled={isLoading}
-          className="w-full py-2 rounded-xl text-white bg-linear-to-b from-[#7d2f30] to-[#9b3832] hover:opacity-95 transition"
+          className="w-full py-2 rounded-xl text-white bg-linear-to-b from-[#7d2f30] to-[#9b3832] hover:opacity-95 transition hover:cursor-pointer"
         >
           Schedule Session
         </button>

@@ -40,14 +40,36 @@ body {
   animation: pulse-glow 2s infinite ease-in-out;
 }
 
-input,
-select {
-  appearance: none;
-  -webkit-appearance: none;
+@layer base {
+
+  *::-webkit-scrollbar {
+    display: none;
+  }
+
+  * {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
 }
 
 input[type="date"],
 input[type="time"] {
   appearance: none;
   -webkit-appearance: none;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator,
+input[type="time"]::-webkit-calendar-picker-indicator {
+  display: none;
 }

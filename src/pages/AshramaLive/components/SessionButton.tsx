@@ -21,6 +21,7 @@ const SessionButton = ({
           transition
           hover:opacity-90
           text-white
+          hover:cursor-pointer
         "
     >
       {title}

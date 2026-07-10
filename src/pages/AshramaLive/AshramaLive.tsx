@@ -1,110 +1,145 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
+
 import {
   useCreateAshramaLiveSessionMutation,
   useEndAshramaLiveSessionMutation,
+  useGetAshramaLiveSessionsQuery,
+  useStartAshramaLiveSessionMutation,
 } from "../../redux/api/ashramamLiveApi";
-import LiveBroadcastAshrama from "./LiveBroadcastAshrama";
+
 import AshramaGoLiveCard from "./components/AshramaGoLiveCard";
+import FeaturedSessions from "./components/FeaturedSessions";
 import ScheduleSession from "./components/ScheduleSession";
-import SessionButton from "./components/SessionButton";
+import LiveBroadcastAshrama from "./LiveBroadcastAshrama";
 
 const AshramaLive = () => {
   const location = useLocation();
 
   const [topic, setTopic] = useState("");
-  // The live session created on the backend (carries id + host broadcast url).
   const [activeSession, setActiveSession] = useState<any>(null);
-  const [isLive, setIsLive] = useState(false);
 
-  const [createLiveSession, { isLoading: isCreating }] =
+  const isLive = Boolean(activeSession?.host_url);
+
+  const [createSession, { isLoading: isCreating }] =
     useCreateAshramaLiveSessionMutation();
-  const [endLiveSession, { isLoading: isEnding }] =
+
+  const [endSession, { isLoading: isEnding }] =
     useEndAshramaLiveSessionMutation();
 
-  // Listen for scheduled sessions launched from other tabs (like Bookings)
-  useEffect(() => {
-    if (location.state?.activeSession) {
-      const session = location.state.activeSession;
-      setActiveSession(session);
-      setTopic(session.title || "");
-      setIsLive(true);
+  const [startScheduledSession] = useStartAshramaLiveSessionMutation();
 
-      // Clear navigation state to prevent re-entering live mode on reload
-      window.history.replaceState({}, document.title);
-    }
+  const { data: liveSessionsData } = useGetAshramaLiveSessionsQuery(undefined, {
+    pollingInterval: 15000,
+  });
+
+  const upcomingSessions = liveSessionsData?.upcoming ?? [];
+
+  useEffect(() => {
+    const session = location.state?.activeSession;
+
+    if (!session) return;
+
+    setActiveSession(session);
+    setTopic(session.title ?? "");
+
+    window.history.replaceState({}, document.title);
   }, [location.state]);
 
-  const handleStartLive = async () => {
-    const title = topic.trim();
-    if (!title) {
+  const startLiveSession = async (title: string) => {
+    if (!title.trim()) {
       alert("Please enter a session topic before going live.");
       return;
     }
 
     try {
-      const session = await createLiveSession({
+      const session = await createSession({
         mode: "live",
-        title,
+        title: title.trim(),
       }).unwrap();
+
       if (!session?.host_url) {
-        alert(
-          "Live room was created but no broadcast link was returned. Please try again.",
-        );
-        return;
+        throw new Error("Missing broadcast URL");
       }
-      setIsLive(true);
+
       setActiveSession(session);
-    } catch (err: any) {
-      console.error("Failed to start live session", err);
-      alert(
-        err?.data?.message ||
-          "Could not start the live session. Please try again.",
-      );
-    } finally {
       setTopic("");
+    } catch (error: any) {
+      console.error("Start live session failed:", error);
+
+      alert(
+        error?.data?.message ??
+          "Could not start live session. Please try again.",
+      );
     }
   };
 
-  const handleEndLive = async () => {
-    if (!confirm("Are you sure you want to end this live session?")) return;
+  const startScheduledLiveSession = async (sessionId: number) => {
+    if (!sessionId) return;
+
+    try {
+      const session = await startScheduledSession(sessionId).unwrap();
+
+      if (!session?.host_url) {
+        throw new Error("Missing broadcast URL");
+      }
+
+      setActiveSession(session);
+    } catch (error: any) {
+      console.error("Start scheduled session failed:", error);
+
+      alert(
+        error?.data?.message ??
+          "Could not start live session. Please try again.",
+      );
+    }
+  };
+
+  const stopLiveSession = async () => {
+    const confirmed = window.confirm(
+      "Are you sure you want to end this live session?",
+    );
+
+    if (!confirmed) return;
 
     try {
       if (activeSession?.id) {
-        await endLiveSession(activeSession.id).unwrap();
+        await endSession(activeSession.id).unwrap();
       }
-    } catch (err) {
-      console.error("Failed to end live session", err);
+    } catch (error) {
+      console.error("End live session failed:", error);
     } finally {
-      setIsLive(false);
-      setTopic("");
       setActiveSession(null);
+      setTopic("");
     }
   };
 
   return (
-    <section className="p-4">
-      {isLive && activeSession?.host_url ? (
-        <>
-          <LiveBroadcastAshrama
-            hostUrl={activeSession?.host_url}
-          />
-          <SessionButton
-            title={"End Session"}
-            handleClick={handleEndLive}
-            disabled={isEnding}
-          />
-        </>
+    <section className="p-4 lg:flex lg:justify-center lg:items-center lg:h-screen pb-20 lg:pb-0">
+      {isLive ? (
+        <LiveBroadcastAshrama
+          hostUrl={activeSession?.host_url}
+          stopLiveSession={stopLiveSession}
+          isEnding={isEnding}
+        />
       ) : (
-        <>
+        <div className="grid lg:grid-cols-3 gap-4">
           <AshramaGoLiveCard
             topic={topic}
             setTopic={setTopic}
-            handleStartLive={handleStartLive}
+            handleStartLive={() => startLiveSession(topic)}
             isStarting={isCreating}
           />
+
+          {upcomingSessions.length > 0 && (
+            <FeaturedSessions
+              handleStart={startScheduledLiveSession}
+              sessions={upcomingSessions}
+            />
+          )}
+
           <ScheduleSession />
-        </>
+        </div>
       )}
     </section>
   );
