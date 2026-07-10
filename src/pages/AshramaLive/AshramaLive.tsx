@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
 
 import {
   useCreateAshramaLiveSessionMutation,
@@ -14,8 +13,6 @@ import ScheduleSession from "./components/ScheduleSession";
 import LiveBroadcastAshrama from "./LiveBroadcastAshrama";
 
 const AshramaLive = () => {
-  const location = useLocation();
-
   const [topic, setTopic] = useState("");
   const [activeSession, setActiveSession] = useState<any>(null);
 
@@ -33,18 +30,12 @@ const AshramaLive = () => {
     pollingInterval: 15000,
   });
 
-  const upcomingSessions = liveSessionsData?.upcoming ?? [];
-
   useEffect(() => {
-    const session = location.state?.activeSession;
+    const liveSession = liveSessionsData?.live?.[0] ?? null;
+    setActiveSession(liveSession);
+  }, [liveSessionsData]);
 
-    if (!session) return;
-
-    setActiveSession(session);
-    setTopic(session.title ?? "");
-
-    window.history.replaceState({}, document.title);
-  }, [location.state]);
+  const upcomingSessions = liveSessionsData?.upcoming ?? [];
 
   const startLiveSession = async (title: string) => {
     if (!title.trim()) {

@@ -78,9 +78,6 @@ const ScheduleSession = () => {
 
     if (!validate()) return;
 
-    console.log(form);
-
-    // API Call Here
     try {
       await createLiveSession({
         mode: "scheduled",
