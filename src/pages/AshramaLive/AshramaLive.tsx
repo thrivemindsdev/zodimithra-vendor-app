@@ -14,7 +14,7 @@ import LiveBroadcastAshrama from "./LiveBroadcastAshrama";
 
 // AshramaLive.tsx (Snippet)
 
-import { Camera } from "@capacitor/Camera";
+import { Camera } from "@capacitor/camera";
 import { Capacitor } from "@capacitor/core";
 
 const requestBroadcastingPermissions = async (): Promise<boolean> => {
