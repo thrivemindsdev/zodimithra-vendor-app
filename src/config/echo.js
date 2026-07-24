@@ -20,7 +20,7 @@ function createEcho() {
     const config = {
         broadcaster: 'reverb',
         key: 'cglzdl6g3q34q1h4tnch',
-        wsHost: isLocal ? getHostName(apiUrl) : 'zodireverb.howincloud.com',
+        wsHost: isLocal ? getHostName(apiUrl) : 'zodireverb.zodimithra.com',
         wsPort: isLocal ? 8080 : 443,
         wssPort: isLocal ? 8080 : 443,
         forceTLS: !isLocal,

@@ -12,6 +12,66 @@ import FeaturedSessions from "./components/FeaturedSessions";
 import ScheduleSession from "./components/ScheduleSession";
 import LiveBroadcastAshrama from "./LiveBroadcastAshrama";
 
+// AshramaLive.tsx (Snippet)
+
+import { Camera } from "@capacitor/Camera";
+import { Capacitor } from "@capacitor/core";
+
+const requestBroadcastingPermissions = async (): Promise<boolean> => {
+  // 1. Native Mobile (Android/iOS)
+  if (Capacitor.isNativePlatform()) {
+    try {
+      // Request camera native permission (Capacitor Camera plugin)
+      const permissions = await Camera.requestPermissions({
+        permissions: ["camera"],
+      });
+
+      if (
+        permissions.camera !== "granted" &&
+        permissions.camera !== "limited"
+      ) {
+        alert(
+          "Camera permission is required to go live. Please enable it in system settings.",
+        );
+        return false;
+      }
+
+      // Return true to allow WebView to initiate microphone & broadcast iframe
+      return true;
+    } catch (error) {
+      console.warn("Native camera permission check skipped or failed:", error);
+      return true;
+    }
+  }
+
+  // 2. Web / Browser
+  // If running over local HTTP dev server (10.x.x.x), navigator.mediaDevices is undefined.
+  // We bypass the pre-check instead of blocking the app with an alert.
+  if (!navigator?.mediaDevices?.getUserMedia) {
+    console.warn(
+      "navigator.mediaDevices is unavailable in this environment (likely HTTP context). Skipping pre-check.",
+    );
+    return true;
+  }
+
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({
+      video: true,
+      audio: true,
+    });
+
+    // Release camera & mic hardware handles so the broadcast iframe can use them
+    stream.getTracks().forEach((track) => track.stop());
+    return true;
+  } catch (error) {
+    console.error("Camera/Microphone access denied:", error);
+    alert(
+      "Camera and Microphone permissions are required to start a live session.",
+    );
+    return false;
+  }
+};
+
 const AshramaLive = () => {
   const [topic, setTopic] = useState("");
   const [activeSession, setActiveSession] = useState<any>(null);
@@ -42,6 +102,10 @@ const AshramaLive = () => {
       alert("Please enter a session topic before going live.");
       return;
     }
+
+    // 🔴 1. Request device permissions first
+    const hasPermissions = await requestBroadcastingPermissions();
+    if (!hasPermissions) return; // Stop if user denied access
 
     try {
       const session = await createSession({

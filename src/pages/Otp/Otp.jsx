@@ -211,7 +211,7 @@ export default function Otp() {
 
         {/* Card Overlay container */}
         <div
-          className="flex-1 mx-4 sm:mx-5 mb-6 bg-white/70 border-[0.87px] border-[#5D4037]/10 backdrop-blur-[8.74px] rounded-[20.97px] p-5 sm:p-7 flex flex-col justify-between items-start box-border shadow-[0px_4px_30px_rgba(93,64,55,0.05)]"
+          className="mx-4 sm:mx-5 mb-6 bg-white/70 border-[0.87px] border-[#5D4037]/10 backdrop-blur-[8.74px] rounded-[20.97px] p-5 sm:p-7 flex flex-col justify-between items-start box-border shadow-[0px_4px_30px_rgba(93,64,55,0.05)]"
         >
           {/* Frame 1: Title, Subtitle and Inputs */}
           <div className="flex flex-col items-center p-0 w-full">

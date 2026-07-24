@@ -1,0 +1,10 @@
+{
+  "appId": "com.zodimithra.vendor",
+  "appName": "ZodiMithra",
+  "webDir": "dist",
+  "server": {
+    "url": "https://vendor.zodimithra.com",
+    "cleartext": true,
+    "androidScheme": "https"
+  }
+}

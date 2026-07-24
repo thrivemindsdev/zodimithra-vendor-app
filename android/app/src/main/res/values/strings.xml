@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">ZodiMithra</string>
+    <string name="title_activity_main">ZodiMithra</string>
+    <string name="package_name">com.zodimithra.vendor</string>
+    <string name="custom_url_scheme">com.zodimithra.vendor</string>
+</resources>
